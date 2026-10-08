@@ -1,18 +1,50 @@
 import { Request, Response } from "express";
 import { SpecialtyService } from "./specialty.service";
 
-
-const createSpecialty = async (req:Request,res:Response) => {
+const createSpecialty = async (req: Request, res: Response) => {
+  try {
     const payload = req.body;
-    const result = await SpecialtyService.createSpecialty(payload)
+    const result = await SpecialtyService.createSpecialty(payload);
 
     res.status(201).json({
-        success:true,
-        message:"Specialty created successfully",
-        data:result
-    })
+      success: true,
+      message: "Specialty created successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getAllSpecialties = async (req: Request, res: Response) => {
+  try {
+    const result = await SpecialtyService.getAllSpecialties();
 
-}
-export const SpecialtyController={
-    createSpecialty
-}
+    res.status(201).json({
+      success: true,
+      message: "Specialties retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const deleteSpecialty = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params ;
+    const result = await SpecialtyService.deleteSpecialty(id as string);
+
+    res.status(201).json({
+      success: true,
+      message: "Specialty deleted successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const SpecialtyController = {
+  createSpecialty,
+  getAllSpecialties,
+  deleteSpecialty,
+};

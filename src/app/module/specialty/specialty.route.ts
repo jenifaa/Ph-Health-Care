@@ -3,6 +3,9 @@ import { SpecialtyController } from "./specialty.controller";
 
 const router = Router();
 
-router.post("/specialties", SpecialtyController.createSpecialty);
+router.post("/create", SpecialtyController.createSpecialty);
+router.get("/getAll", SpecialtyController.getAllSpecialties);
+// router.put("/specialties/:id", SpecialtyController.updateSpecialty);
+router.delete("/:id", SpecialtyController.deleteSpecialty);
 
 export const SpecialtyRoutes = router;
