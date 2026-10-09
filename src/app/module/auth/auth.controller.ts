@@ -1,21 +1,22 @@
-import { NextFunction, Request, Response } from "express";
+import {  Request, Response } from "express";
 import { AuthService } from "./auth.services";
-import { StatusCodes } from "http-status-codes";
 
-const loginUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const result = await AuthService.loginUser(req.body);
+import { catchAsync } from "../../shared/catchAsync";
+import { sendResponse } from "../../shared/sendResponse";
 
-    res.status(StatusCodes.OK).json({
+const registerPatient = catchAsync(
+  async (req: Request, res: Response) => {
+    const payload = req.body;
+    const result = await AuthService.registerPatient(payload);
+    sendResponse(res, {
+      httpStatusCode: 201,
       success: true,
-      message: "Login successful",
+      message: "Patient registered successfully",
       data: result,
     });
-  } catch (error) {
-    next(error);
-  }
-};
+  },
+);
 
 export const AuthController = {
-  loginUser,
+  registerPatient,
 };
