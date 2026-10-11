@@ -11,6 +11,19 @@ interface EnvConfig {
 }
 
 const loadEnvVariables = (): EnvConfig => {
+  const requiredVariables = [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "PORT",
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
+  ];
+
+  for (const variable of requiredVariables) {
+    if (!process.env[variable]) {
+      throw new Error(`Environment variable '${variable}' is not set`);
+    }
+  }
   return {
     NODE_ENV: process.env.NODE_ENV as string,
     DATABASE_URL: process.env.DATABASE_URL as string,
@@ -20,4 +33,4 @@ const loadEnvVariables = (): EnvConfig => {
   };
 };
 
-export const envVars:EnvConfig = loadEnvVariables()
+export const envVars: EnvConfig = loadEnvVariables();

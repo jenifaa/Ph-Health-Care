@@ -1,9 +1,10 @@
 import app from "./app";
+import { envVars } from "./config/env";
 
 const bootstrap = async () => {
   try {
-    app.listen(process.env.PORT || 5000, () => {
-      console.log(`Server is running on port ${process.env.PORT || 5000}`);
+    app.listen(envVars.PORT, () => {
+      console.log(`Server is running on port ${envVars.PORT}`);
     });
   } catch (error) {
     console.error("Error occurred while starting the server:", error);
