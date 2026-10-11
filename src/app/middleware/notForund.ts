@@ -1,0 +1,8 @@
+import { Request, Response } from "express";
+import status from "http-status-codes";
+export const notFound = (req: Request, res: Response) => {
+  res.status(status.NOT_FOUND).json({
+    success: false,
+    message: "router not found",
+  });
+};
