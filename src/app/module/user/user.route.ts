@@ -1,9 +1,18 @@
 import { Router } from "express";
-import { DoctorController } from "./user.controller";
+import { UserController } from "./user.controller";
+import { validateRequest } from "../../middleware/validateRequest";
+import { createDoctorZodSchema } from "./user.validation";
+
 
 
 const router = Router();
 
-router.post("/", DoctorController.createDoctor);
+router.post("/create-doctor",
+
+
+
+    validateRequest(createDoctorZodSchema),
+
+    UserController.createDoctor);
 
 export const DoctorRoutes = router;

@@ -20,6 +20,6 @@ const createDoctor = catchAsync(
     }
 )
 
-export const DoctorController = {
+export const UserController = {
   createDoctor,
 };
