@@ -1,9 +1,10 @@
 
 import status from "http-status-codes";
 import { ICreateDoctorPayload } from "./user.interface";
-import { Specialty } from "../../../generated/prisma/client";
+import { Role, Specialty } from "../../../generated/prisma/client";
 import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
+import { auth } from "../../lib/auth";
 
 const createDoctor = async (payload: ICreateDoctorPayload) => {
   const specialties: Specialty[] = [];
@@ -15,7 +16,6 @@ const createDoctor = async (payload: ICreateDoctorPayload) => {
       },
     });
     if (!specialty) {
-      // throw new Error(`Specialty with id ${specialtyId} not found`);
       throw new AppError(
         status.NOT_FOUND,
         `Specialty with id ${specialtyId} not found`,

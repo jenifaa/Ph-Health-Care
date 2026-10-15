@@ -1,25 +1,24 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import httpStatus from "http-status-codes";
-import { DoctorService } from "./user.services";
+import {  UserService } from "./user.services";
+import { sendResponse } from "../../shared/sendResponse";
+import { catchAsync } from "../../shared/catchAsync";
 
 
-const createDoctor = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const result = await DoctorService.createDoctor(req.body);
+const createDoctor = catchAsync(
+    async (req: Request, res: Response) => {
+        const payload = req.body;
 
-    res.status(httpStatus.CREATED).json({
-      success: true,
-      message: "Doctor created successfully",
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+        const result = await UserService.createDoctor(payload);
+
+        sendResponse(res, {
+            httpStatusCode: httpStatus.CREATED,
+            success: true,
+            message: "Doctor registered successfully",
+            data: result,
+        })
+    }
+)
 
 export const DoctorController = {
   createDoctor,
