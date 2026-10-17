@@ -48,6 +48,7 @@ const createDoctor = async (payload: ICreateDoctorPayload) => {
 
   try {
     const result = await prisma.$transaction(async (tx) => {
+      
       const doctorData = await tx.doctor.create({
         data: {
           userId: userData.user.id,
@@ -176,5 +177,5 @@ const createDoctor = async (payload: ICreateDoctorPayload) => {
 
 export const UserService = {
   createDoctor,
-  createAdmin,
+  
 };
