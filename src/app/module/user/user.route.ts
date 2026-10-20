@@ -13,4 +13,4 @@ router.post(
   UserController.createDoctor,
 );
 
-export const DoctorRoutes = router;
+export const UserRoutes = router;
