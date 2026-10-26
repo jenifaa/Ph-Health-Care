@@ -3,12 +3,8 @@ import { NextFunction, Request, Response } from "express";
 import { envVars } from "../../config/env";
 import status from "http-status-codes";
 import z from "zod";
+import { TErrorResponse, TErrorSource } from "../interfaces/error.interface";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-interface IErrorSource {
-  path: string;
-  message: string;
-}
 
 export const globalErrorHandler = (
   err: any,
@@ -20,7 +16,7 @@ export const globalErrorHandler = (
     console.log("Error from global error handler", err);
   }
 
-  const errorSource: IErrorSource[] = [];
+  const errorSource: TErrorSource[] = [];
   let statusCode: number = status.INTERNAL_SERVER_ERROR;
 
   let message: string = "Internal Server Error";
@@ -37,10 +33,12 @@ export const globalErrorHandler = (
     });
   }
 
-  res.status(statusCode).json({
+  const errorResponse: TErrorResponse = {
     success: false,
     message: message,
     errorSource,
     error: envVars.NODE_ENV === "development" ? err : undefined,
-  });
+  };
+
+  res.status(statusCode).json(errorResponse);
 };
