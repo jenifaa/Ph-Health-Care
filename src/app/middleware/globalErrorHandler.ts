@@ -5,6 +5,7 @@ import status from "http-status-codes";
 import z from "zod";
 import { TErrorResponse, TErrorSource } from "../interfaces/error.interface";
 import { handleZodError } from "../errorHelpers/handleZodError";
+import AppError from "../errorHelpers/AppError";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export const globalErrorHandler = (
@@ -17,12 +18,12 @@ export const globalErrorHandler = (
     console.log("Error from global error handler", err);
   }
 
-  const errorSource: TErrorSource[] = [];
+  let errorSource: TErrorSource[] = [];
   let statusCode: number = status.INTERNAL_SERVER_ERROR;
 
   let message: string = "Internal Server Error";
 
-  let stack:string |undefined = undefined
+  let stack: string | undefined = undefined;
 
   if (err instanceof z.ZodError) {
     const simplifiedError = handleZodError(err);
@@ -30,11 +31,21 @@ export const globalErrorHandler = (
     statusCode = simplifiedError.statusCode as number;
     message = simplifiedError.message;
     errorSource.push(...simplifiedError.errorSource);
-    stack = err.stack
+    stack = err.stack;
+  } else if (err instanceof AppError) {
+    statusCode = err.statusCode;
+    message = err.message;
+    stack = err.stack;
+    errorSource = [
+      {
+        path: "",
+        message: err.message,
+      },
+    ];
   } else if (err instanceof Error) {
     statusCode = status.INTERNAL_SERVER_ERROR as number;
     message = err.message;
-    stack = err.stack
+    stack = err.stack;
   }
 
   const errorResponse: TErrorResponse = {
