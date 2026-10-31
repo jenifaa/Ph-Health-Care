@@ -99,10 +99,15 @@ export const checkAuth =
         throw new AppError(StatusCodes.UNAUTHORIZED, "Unauthorized Access!!");
       }
 
-      if (verifiedToken.data!.role !== "ADMIN") {
-        throw new AppError(StatusCodes.UNAUTHORIZED, "Unauthorized Access!!");
+      if (
+        authRoles.length > 0 &&
+        !authRoles.includes(verifiedToken.data!.role as Role)
+      ) {
+        throw new AppError(
+          StatusCodes.FORBIDDEN,
+          "Forbidden access! You do not have permission to access this resources",
+        );
       }
-
       next();
     } catch (error: any) {
       next(error);
