@@ -1,20 +1,15 @@
-
-
 model MedicalReport {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  patientId     String   @db.Uuid
-  doctorId      String   @db.Uuid
-  appointmentId String   @unique @db.Uuid
-  diagnosis     String
-  treatment     String
-  followUpDate  DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id         String @id @default(uuid(7))
+  patientId  String
+  reportName String
+  reportLink String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  patient     Patient     @relation(fields: [patientId], references: [id])
-  doctor      Doctor      @relation(fields: [doctorId], references: [id])
-  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  patient Patient @relation(fields: [patientId], references: [id])
 
+  @@index([patientId])
   @@map("medical_reports")
 }
